@@ -10,3 +10,4 @@ class ManagerList(generics.ListCreateAPIView):
 class ManagerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Manager.objects.all()
     serializer_class = ManagerSerializer
+    
