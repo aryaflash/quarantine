@@ -4,9 +4,9 @@ from .models import Manager, Staff
 class ManagerSerializer(serializers.ModelSerializer):
     class Meta:
         model = Manager
-        fields = ['name', 'gmail', 'phoneNumber', 'address', 'password']
+        fields = ['name', 'gmail', 'phoneNumber', 'address', 'password', 'town', 'state']
 
 class StaffSerializer(serializers.ModelSerializer):
     class Meta:
         model = Staff
-        fields = ['name', 'gmail', 'phoneNumber', 'address', 'manager']
+        fields = ['name', 'gmail', 'phoneNumber', 'address', 'manager', 'town', 'state', 'availableFrom', 'availableTill', 'password']

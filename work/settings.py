@@ -31,6 +31,8 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'django_filters',
+    'flash.apps.FlashConfig',
     'arya.apps.AryaConfig',
     'rest_framework',
     'django.contrib.admin',
