@@ -49,10 +49,3 @@ class AvailableStaffByTime(APIView):
         staff = self.get_object(place = place)
         serializer = StaffSerializer(staff, many = True)
         return Response(serializer.data)
-
-class check(APIView):
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-    def samp(self, request, year = 2020):
-        year = request.GET['year']
-        print(year)
-        return Response({{'year':year}})
