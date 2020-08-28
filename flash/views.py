@@ -1,4 +1,3 @@
-from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.views import APIView
 from django.http import Http404
@@ -8,17 +7,24 @@ from .serializers import CustomerSerializer
 from arya.models import Staff
 from arya.serializers import StaffSerializer
 from django.utils import timezone
+from rest_framework import permissions
 
 # Create your views here.
 class CustomerList(generics.ListCreateAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    
+    def perform_create(self, serializer):
+        serializer.save(owner = self.request.user)
 
 class CustomerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 class AvailableStaff(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get_object(self, place):
         try:
             return Staff.objects.filter(town = place)
@@ -31,9 +37,10 @@ class AvailableStaff(APIView):
         return Response(serializer.data)
         
 class AvailableStaffByTime(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get_object(self, place):
         try:
-            return Staff.objects.filter(town = place).exclude(availableTill__lte = timezone.now()).filter(availableFrom__gte = timezone.now())
+            return Staff.objects.filter(town = place).exclude(availableTill__lte = timezone.now())
         except Staff.DoesNotExist:
             raise Http404
 
@@ -42,3 +49,10 @@ class AvailableStaffByTime(APIView):
         staff = self.get_object(place = place)
         serializer = StaffSerializer(staff, many = True)
         return Response(serializer.data)
+
+class check(APIView):
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    def samp(self, request, year = 2020):
+        year = request.GET['year']
+        print(year)
+        return Response({{'year':year}})
